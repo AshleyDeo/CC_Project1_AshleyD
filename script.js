@@ -1,311 +1,295 @@
 //------CLASSES----------------------------------
-class Firework_1 {
+
+let bg_r = 0;
+let bg_g = 0;
+let bg_b = 0;
+
+let xplode = false;
+let splode = false;
+
+class Smoke {
     constructor() {
-        this.xpos = 0;
-        this.ypos = 0;
-        this.rad = 10; //radius
-        this.run = false; //bool for update to run contents
-        this.blow = false; //bool for explosion
-        this.splodex = 20; //position x for explosion particles
-        this.splodeSpd = 1; //speed of explosion particles
-        //this.alpha = 255;
+        this.visibility = false;
+        this.xOrigin = 0;
+        this.yOrigin = 0;
+        this.xpos = 20;
+        this.ypos = 10
+        this.rad = 50; //radius
+        this.alpha = 255;
     }
 
     update() {
-        if (this.run) { //if mouse clicked run explosion
-            this.grow();
-        }
-    }
-
-    grow() { //grows explosion particle
-        push();
-        //console.log(this.blow);
-        translate(this.xpos, this.ypos); //center at mouse
-        if (this.blow == false) { 
-            fill(255,200,100);
-            stroke(200,100,100);
-            strokeWeight(3);
-            ellipse(0, 0, this.rad);
-            this.rad += 10;
-            if (this.rad > 50) {
-                this.blow = true;
-                this.rad = 10;
-            }
-        } else {
-            this.explode();
-        }
-        pop();
-    }
-    explode() {
-        if (this.splodex < 400) {
-            for (let i = 0; i < 8; i++) {
-                for (let j = 0; j < 8; j++) {
-                    push();
-                    rotate(degrees(i * 15 + j));
-                    noStroke();
-                    strokeWeight(2);
-                    fill(255, 200, 200);
-                    ellipse(this.splodex, this.splodex / 2, 10);
-                    pop();
-                    
-                }
-                this.splodex++;
-            }
-        } else {
-            this.run = false; //stop running and reset vars
-            this.blow = false;
-            this.splodex = 20;
-        }
-    }
-}
-
-class Firework_2 {
-    constructor(x,y,ys,n) {
-        this.xpos = x;
-        this.ypos = y;
-        this.yStop = ys; // position y to stop at
-        this.rad = 10; //radius
-        this.blow = false;
-        this.splodex = 20;  //particle position x
-        this.splodey = 20; //particle position y
-        this.splodeSpd = 2; //explosion particle speed
-        //this.falling = false;
-        this.splodeNum = n; //particle type
-    }
-
-    update() {
-        this.grow();
-    }
-
-    grow() {
-        push();
-        translate(this.xpos, this.ypos);
-        if (this.ypos > this.yStop) {
-            fill(random(150, 255),random(50,150),random(0,100));
-            noStroke();
-            ellipse(0, 0, this.rad);
-            this.ypos -= 10;
-            this.rad += 0.5;
-        } else {
-            this.rad = 10;
-            this.explode();
-        }
-        pop();
-        /*if (this.falling) {
-            this.fall();
-        }*/
-    }
-    explode() {
-        if (this.splodex < 300) {
-            if (this.splodeNum == 0) {
-                for (let i = 0; i < 8; i++) {
-                    push();
-                    rotate(degrees(i * 20));
-                    stroke(255, 0, 0);
-                    strokeWeight(2);
-                    fill(255, 200, 200);
-                    rect(this.splodex/2, this.splodey/2, 10);
-                    pop();
-                    this.splodex += this.splodeSpd;
-                    this.splodey += this.splodeSpd;
-                }
-            } else if (this.splodeNum == 1) {
-                for (let i = 0; i < 6; i++) {
-                    push();
-                    rotate(degrees(i * 35));
-                    stroke(200, 100, 200);
-                    strokeWeight(2);
-                    fill(100, 100, 255);
-                    ellipse(this.splodex, this.splodex, 60);
-                    pop();
-            
-                    push();
-                    rotate(degrees(i * 40));
-                    stroke(200, 100, 200);
-                    strokeWeight(2);
-                    fill(200, 0, 100);
-                    rect(this.splodex, this.splodex, 30);
-                    pop();
-                    this.splodex += this.splodeSpd;
-                    this.splodey += this.splodeSpd;
-                }
-            } else if (this.splodeNum == 2) {
-                for (let i = 0; i < 7; i++) {
-                    push();
-                    rotate(degrees(i * 30));
-                    stroke(100, 100, 100);
-                    strokeWeight(2);
-                    fill(100, 255, 100);
-                    rect(this.splodex - 20, this.splodey - 10, 30);
-                    pop();
-                    this.splodex++;
-                    this.splodey++;
-                }
-            }
-        } else if (this.splodey < 400) {
-            if (this.splodeNum == 0) {
-                for (let i = 0; i < 8; i++) {
-                    push();
-                    rotate(degrees(i * 20));
-                    stroke(255, 0, 0);
-                    strokeWeight(2);
-                    fill(255, 200, 200);
-                    rect(this.splodex, this.splodey, 10);
-                    pop();
-                    this.splodey += this.splodeSpd;
-                }
-            } else if (this.splodeNum == 1) {
-                for (let i = 0; i < 6; i++) {
-                    push();
-                    rotate(degrees(i * 35));
-                    stroke(200, 100, 200);
-                    strokeWeight(2);
-                    fill(100, 100, 255);
-                    ellipse(this.splodex, this.splodey, 60);
-                    pop();
-                    this.splodex += this.splodeSpd;
-                    this.splodey += this.splodeSpd;
-                }
-            } else if (this.splodeNum == 2) {
-                for (let i = 0; i < 7; i++) {
-                    push();
-                    rotate(degrees(i * 30));
-                    stroke(100, 100, 100);
-                    strokeWeight(2);
-                    fill(100, 255, 100, 255/2);
-                    rect(this.splodex - 20, this.splodey - 10, 20);
-                    pop();
-                    this.splodex += 1;
-                    this.splodey += 1;
-                }
-            }
-        } else {
-            this.splodex = 20;
-            this.splodey = 20;
-            this.splodeNum = Math.floor(Math.random() * 3);
-            this.xpos = random(20, width - 20);
-            this.ypos = height;
-            this.yStop = random(20, height / 2)
-        }
-    }
-
-    fall() {
-        if (this.fallNum < 60) {
-            console.log(this.ypos);
+        if (this.visibility) {  //if visibility draw
+            splode = true;
+            bg_r = 255;
+            bg_g = 0;
+            bg_b = 0;
             push();
-            translate(this.xpos, this.ypos);
-            for (let i = 0; i < 7; i++) {
-                rotate(degrees(i * 30));
-                stroke(100, 100, 100);
-                strokeWeight(2);
-                fill(100, 255, 100);
-                ellipse(this.splodex - 20, this.splodex - 10, 30);
+            translate(this.xOrigin, this.yOrigin);
+            noStroke();
+            fill(220, 220, 220, this.alpha);
+
+            for (let j = 0; j < 8; j++) {
+                rotate(HALF_PI / 2);
+                ellipse(this.xpos, this.ypos, this.rad, this.rad);
+                ellipse(-this.xpos, this.ypos, this.rad, this.rad);
+                ellipse(0, this.ypos - 10, this.rad, this.rad);
+            }
+
+            this.rad += 2;
+            this.xpos += 3;
+            this.ypos -= 3;
+            this.alpha -= 7;
+            if (this.alpha <= 0) {
+                this.reset();
             }
             pop();
-            this.fallNum++;
-            this.ypos += 5;
-        } else {
-            this.splodex = 20;
-            this.splodeNum = Math.floor(Math.random() * 3);
-            this.fallNum = 0;
-            this.falling = false;
-            this.xpos = random(20, width - 20);
-            this.ypos = height;
-            this.yStop = random(20, height / 2)
+
         }
+    }
+
+    reset() {
+        splode = false;
+        this.rad = 50;
+        this.visibility = false;
+        this.alpha = 255;
+        this.xpos = 20;
+        this.ypos = 10
     }
 }
 
-class ShootingStar {
-    consrtuctor(x,y,xs,ys,r) {
+class Fire {
+    constructor(x, y) {
+        this.visibility = false;
+        this.xOrigin = x;
+        this.yOrigin = y;
+        this.xpos = 5;
+        this.ypos = 0;
+        this.rad = 50; //radius
+        this.smokes = new Smoke(x, y);
+    }
+
+    update() {
+        if (this.visibility) { //if visibility draw
+            xplode = true;
+            bg_r = 255;
+            bg_g = 150;
+            bg_b = 0;
+            push();
+            //console.log(this.blow);
+            translate(this.xOrigin, this.yOrigin); //center at mouse
+            noStroke();
+            for (let j = 0; j < 32; j++) {
+                rotate(HALF_PI / 8);
+                fill(255, 220, 50);
+                triangle(this.xpos, this.ypos, -this.xpos, this.ypos, 0, this.ypos * 2);
+            }
+            for (let j = 0; j < 16; j++) {
+                rotate(HALF_PI / 4);
+                fill(255, 150, 50);
+                triangle(this.xpos, this.ypos / 2, -this.xpos, this.ypos / 2, 0, this.ypos);
+            }
+            for (let j = 0; j < 8; j++) {
+                rotate(HALF_PI / 2);
+                fill(255, 50, 50);
+                triangle(this.xpos, this.ypos / 4, -this.xpos, this.ypos / 4, 0, this.ypos / 2);
+            }
+            this.xpos += 1;
+            this.ypos -= 4;
+            if (this.ypos <= -70) {
+                this.reset();
+                this.smokes.xOrigin = this.xOrigin; //set explosion to mouse position
+                this.smokes.yOrigin = this.yOrigin;
+                this.smokes.visibility = true;
+            }
+            pop();
+
+        }
+        this.smokes.update();
+    }
+
+    reset() {
+        xplode = false;
+        this.rad = 50;
+        this.visibility = false;
+        this.xpos = 5;
+        this.ypos = 0;
+    }
+}
+
+class Bomb {
+    constructor(x, y, r) {
         this.xpos = x;
         this.ypos = y;
-        this.xspd = xs;
-        this.yspd = ys;
-        this.rad = r;
-        this.run = false;
-        this.blow = false;
-        this.splodex = 20;
-    }
-    update() {
-        if (this.run) {
-            this.grow();
-        } else {
-            console.log(this.xpos);
-            this.xpos += this.xs;
-            this.ypos += this.ys;
-            fill(255, 200, 100);
-            noStroke();
-            ellipse(this.xpos, this.ypos, this.rad);
-        }
+        this.rotation = r;
+        this.onFire = false;
+        this.boom = new Fire();
+        this.visibility = true;
+        this.time = 5;
+        this.timer = this.time;
     }
 
-    grow() {
-        push();
-        //console.log(this.blow);
-        translate(this.xpos, this.ypos);
-        if (this.blow == false) {
-            fill(255, 200, 100);
+    update() {
+        if (this.visibility) { //if visibility draw
+            push();
+            translate(this.xpos, this.ypos);
+            rotate(this.rotation)
+
             noStroke();
-            ellipse(0, 0, this.rad);
-            this.rad += 10;
-            if (this.rad > 50) {
-                this.blow = true;
-                this.rad = 10;
+            fill(255, 255, 255);
+            rect(-2, -20, 5, -60, 20);
+
+            fill(100, 100, 100);
+            stroke(0);
+            ellipse(0, 0, 50, 50);
+            rectMode(CENTER);
+            rect(0, -25, 30, 10, 10);
+
+            pop();
+
+            if (this.onFire) { //start explosion
+                this.boom.xOrigin = this.xpos;
+                this.boom.yOrigin = this.ypos;
+                this.boom.visibility = true;
+                this.visibility = false;
             }
         } else {
-            this.explode();
-        }
-        pop();
-    }
-    explode() {
-        if (this.splodex < 200) {
-            for (let i = 0; i < 8; i++) {
-                push();
-                rotate(degrees(i * 20));
-                stroke(255, 0, 0);
-                strokeWeight(2);
-                fill(255, 200, 200);
-                rect(this.splodex, this.splodex, 10);
-                pop();
-                this.splodex++;
+            if (frameCount % 60 == 0 && this.timer > 0) { //timer til reappear
+                this.timer--;
             }
-        } else {
-            this.run = false;
-            this.blow = false;
-            this.splodex = 20;
+            if (this.timer == 0) {
+                //change position
+                this.xpos = random(50, width - 50);
+                this.ypos = random(50, height - 50);
+                //reset values
+                this.visibility = true;
+                this.timer = this.time;
+                this.onFire = false;
+            }
         }
+        this.boom.update();
     }
 }
 
+class Stick {
+    constructor(x, y, r) {
+        this.xpos = x;
+        this.ypos = y;
+        this.rotation = r;
+        this.onFire = false;
+        this.boom = new Fire();
+        this.visibility = true;
+        this.time = 5;
+        this.timer = this.time;
+    }
+
+    update() {
+        if (this.visibility) {
+            push();
+            translate(this.xpos, this.ypos);
+            rotate(this.rotation)
+
+            noStroke();
+            fill(255, 255, 255);
+            rect(-2.5, -20, 5, -40, 20);
+
+            rectMode(CENTER);
+            fill(255, 0, 0);
+            stroke(0);
+            rect(0, 0, 10, 50, 10);
+            rect(-5, 0, 10, 50, 10);
+            rect(5, 0, 10, 50, 5);
+
+            fill(255, 200, 100);
+            rect(0, -15, 20, 10);
+            rect(0, 15, 20, 10);
+            pop();
+
+            if (this.onFire) {
+                this.boom.xOrigin = this.xpos;
+                this.boom.yOrigin = this.ypos;
+                this.boom.visibility = true;
+                this.visibility = false;
+            }
+        } else {
+            if (frameCount % 60 == 0 && this.timer > 0) {
+                this.timer--;
+            }
+            if (this.timer == 0) {
+                this.xpos = random(50, width - 50);
+                this.ypos = random(50, height - 50);
+                this.visibility = true;
+                this.timer = this.time;
+                this.onFire = false;
+            }
+
+        }
+        this.boom.update();
+    }
+}
 //------GLOBAL VARS---------------------------------
-let mouseFires = [5];
-let mouseIndex = 0;
-let fires = [10]
-let star_1;
+let fire1 = new Fire();
+let bombs = [10];
+let sticks = [10];
+let boomTime = 8;
+let boomTimer = boomTime;
 
 //------ FUNCTIONS-----------------------------------
 function setup() {
     let canvas = createCanvas(windowWidth - 20, windowHeight - 20);
-
-    for (let i = 0; i < 5; i++) {
-        mouseFires[i] = new Firework_1();
+    for (let i = 0; i < 10; i++) {
+        bombs[i] = new Bomb(random(50, width - 50), random(50, height - 50), random(PI * 2));
     }
     for (let i = 0; i < 10; i++) {
-        fires[i] = new Firework_2(random(20, width - 20), height, random(20, height * 3 / 4), Math.floor(Math.random() * 3));
+        sticks[i] = new Stick(random(50, width - 50), random(50, height - 50), random(PI * 2));
     }
-
-    star_1 = new ShootingStar(random(20, width-20), random(20, height - 20), 0, 0, random(20,30))
 }
 
 function draw() {
-    background(0,0,70);
-    for (let i = 0; i < 5; i++) {
-        mouseFires[i].update();
+    checkSplode();
+    background(bg_r, bg_g, bg_b);
+    //console.log(boomTimer);
+
+    if (frameCount % 60 == 0 && boomTimer > 0) {
+        boomTimer--;
     }
+    if (boomTimer == 0) { // explode random bomb
+        let bombType = int(random(10));
+        let bombNum = int(random(10));
+        //console.log(bombType);
+        if (bombType > 2 && bombType < 6) {
+            bombs[bombNum].onFire = true;
+        }
+        if (bombType > 5 && bombType < 9) {
+            sticks[bombNum].onFire = true;
+        }
+        boomTimer = boomTime;
+    }
+    let xplode = false;
     for (let i = 0; i < 10; i++) {
-        fires[i].update();
+        bombs[i].update();
+        sticks[i].update();
     }
+}
+
+function checkSplode() { //change background when exploding
+    bg_r = 168;
+    bg_g = 213;
+    bg_b = 255;
+
+    if (xplode) {
+        bg_r = 255;
+        bg_g = 150;
+        bg_b = 0;
+    }
+
+    if (splode) {
+        bg_r = 255;
+        bg_g = 0;
+        bg_b = 0;
+    }
+
+    //console.log(bg_r);
 }
 
 function windowResized() {
@@ -313,19 +297,16 @@ function windowResized() {
 }
 
 function mouseClicked() {
-    mouseFires[mouseIndex].xpos = mouseX;
-    mouseFires[mouseIndex].ypos = mouseY;
-    mouseFires[mouseIndex].run = true;
-    mouseIndex++;
-    if (mouseIndex >= 5) {
-        mouseIndex = 0;
-    }
-}
-
-function mouseMoved() {
-    if (star_1.xpos + star_1.rad < mouseX && star_1.xpos - star_1.rad > mouseX) {
-        if (star_1.ypos + star_1.rad < mouseY && star_1.ypos - star_1.rad > mouseY) {
-            star_1.blow = true;
+    for (let i = 0; i < 10; i++) {
+        if (mouseX <= bombs[i].xpos + 25 && mouseX >= bombs[i].xpos - 25) {
+            if (mouseY <= bombs[i].ypos + 25 && mouseY >= bombs[i].ypos - 35) {
+                bombs[i].onFire = true;
+            }
+        }
+        if (mouseX <= sticks[i].xpos + 10 && mouseX >= sticks[i].xpos - 10) {
+            if (mouseY <= sticks[i].ypos + 25 && mouseY >= sticks[i].ypos - 35) {
+                sticks[i].onFire = true;
+            }
         }
     }
 }
